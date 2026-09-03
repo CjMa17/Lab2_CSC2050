@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+
+test $(ls $1)=*.c #this is supposed to return 0 if your parameter is a c file
+
+test $(ls $1)="something.c" #make sure the file exists
+
+echo "/** 
+* Filename: $(echo $1)
+* Owner: $(ls -l something.c | awk '{print $3}')
+* Last Modified On: $(ls -l something.c | awk '{print $7}') $(ls -l something.c | awk '{print $8}') $(ls -l something.c | awk '{print $9}')
+*/" >> something.c #this is the big one! it takes the filename, owner, and modification date and APPENDS it to something.c. It appends bec		      ause of the >> operator. Just one of those fellers and it overwrites our data! No good!
+
