@@ -1,13 +1,24 @@
 #!/usr/bin/env bash
 
+#i need to make it take any c file, not just something.c
 
-test $(ls $1)=*.c #this is supposed to return 0 if your parameter is a c file
+if [ "${1##*.}" = c ]; then #if the file ends in .c, do this. This syntax is from the cheatsheet
 
-test $(ls $1)="something.c" #make sure the file exists
+
+touch file.c #create our temp. file
+
 
 echo "/** 
 * Filename: $(echo $1)
-* Owner: $(ls -l something.c | awk '{print $3}')
-* Last Modified On: $(ls -l something.c | awk '{print $7}') $(ls -l something.c | awk '{print $8}') $(ls -l something.c | awk '{print $9}')
-*/" >> something.c #this is the big one! it takes the filename, owner, and modification date and APPENDS it to something.c. It appends bec		      ause of the >> operator. Just one of those fellers and it overwrites our data! No good!
+* Owner: $(ls -l $1 | awk '{print $3}')
+* Last Modified On: $(ls -l $1 | awk '{print $7}') $(ls -l $1 | awk '{print $8}') $(ls -l $1 | awk '{print $9}')
+*/" > file.c #this is the big one! it takes the filename, owner, and modification date and APPENDS it to something.c. It appends bec		      ause of the >> operator. Just one of those fellers and it overwrites our data! No good!
 
+
+
+cat $1>>file.c #this will add the contents of something.c to the end of the temp file
+cat file.c > $1  #overwrite the old file with the contents of the new file
+
+rm file.c
+
+fi
